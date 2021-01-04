@@ -2,20 +2,11 @@
 
 namespace lennybacon.MyFood.Data
 {
-  public interface ICanDoSomething
-  {
-
-  }
-
-  public delegate void DoSoething();
-
-    /// <summary>
+  /// <summary>
   /// Gived access to a data provider by mapping the connection string name with the configured connection string.
   /// </summary>
   public class DataAccess
   {
-
-
     /// <summary>
     /// Gets a <see cref="DataProvider"/> by mapping the connection string name with the configured connection string.
     /// </summary>
