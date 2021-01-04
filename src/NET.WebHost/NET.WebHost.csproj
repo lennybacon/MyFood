@@ -59,11 +59,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Resources\Food_Select_ByName.sql" />
     <Content Include="Resources\Food_Select_All.sql" />
@@ -73,6 +68,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\FoodController.cs" />
+    <Compile Include="DataMapper\IMapper.cs" />
+    <Compile Include="DataMapper\FoodMapper.cs" />
+    <Compile Include="DataModel\Food.cs" />
+    <Compile Include="Data\IDataProvider.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\DataAccess.cs" />
     <Compile Include="Global.asax.cs">

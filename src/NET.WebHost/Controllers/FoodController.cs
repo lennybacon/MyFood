@@ -1,4 +1,6 @@
 ﻿using lennybacon.MyFood.Data;
+using lennybacon.MyFood.DataMapper;
+using lennybacon.MyFood.DataModel;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web.Http;
@@ -8,16 +10,17 @@ namespace lennybacon.MyFood.Controllers
   public class FoodController : ApiController
   {
     private DataAccess _dataAccess = new DataAccess();
+    private FoodMapper _mapper = new FoodMapper();
 
     // GET api/values
-    public IEnumerable<string> Get()
+    public IEnumerable<Food> Get()
     {
-      var foods = new List<string>();
+      var foods = new List<Food>();
 
       _dataAccess[Constants.ConnectionStringName].ProcessResult(
         getReaderValue =>
         {
-          foods.Add(getReaderValue("Name").ToString());
+          foods.Add(_mapper.MapFromDatabase(getReaderValue));
         },
         Properties.Resources.Food_Select_All);
       
