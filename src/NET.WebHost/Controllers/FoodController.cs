@@ -1,52 +1,45 @@
-﻿using System;
+﻿using lennybacon.MyFood.Data;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
+using System.Collections.Specialized;
 using System.Web.Http;
 
 namespace lennybacon.MyFood.Controllers
 {
   public class FoodController : ApiController
   {
+    private DataAccess _dataAccess = new DataAccess();
+
     // GET api/values
     public IEnumerable<string> Get()
     {
       var foods = new List<string>();
 
-      var connectionStringSetting = ConfigurationManager.ConnectionStrings["MyFood"];
-      if (connectionStringSetting == null)
-      {
-        throw new ConfigurationErrorsException(
-          "Connection string with name `MyFood` is not configured.");
-      }
-
-      using (var connection = new SqlConnection(connectionStringSetting.ConnectionString))
-      {
-        connection.Open();
-
-        using (var command = connection.CreateCommand())
+      _dataAccess[Constants.ConnectionStringName].ProcessResult(
+        getReaderValue =>
         {
-          command.CommandText = @"SELECT [Name] FROM [dbo].[Food]";
-
-          using (var reader = command.ExecuteReader())
-          {
-            while (reader.Read())
-            {
-              foods.Add(reader["Name"].ToString());
-            }
-          }
-        }
-      }
-
-
+          foods.Add(getReaderValue("Name").ToString());
+        },
+        Properties.Resources.Food_Select_All);
+      
       return foods;
     }
 
-    //// GET api/values/5
-    //public string Get(int id)
-    //{
-    //  return "value";
-    //}
+    // GET api/values/Zitrone
+    public string Get(string id)
+    {
+      string foodName = null;
+      _dataAccess[Constants.ConnectionStringName].ProcessResult(
+       getReaderValue =>
+       {
+         foodName = getReaderValue("Name").ToString();
+       },
+       Properties.Resources.Food_Select_ByName,
+       new OrderedDictionary { 
+         {"Name", id }
+       });
+
+      return foodName;
+    }
 
     //// POST api/values
     //public void Post([FromBody] string value)
