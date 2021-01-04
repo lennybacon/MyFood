@@ -15,7 +15,7 @@ namespace lennybacon.MyFood.Data
     public DataProvider this[string connectionStringName] {
       get
       {
-        var connectionStringSetting = ConfigurationManager.ConnectionStrings["MyFood"];
+        var connectionStringSetting = ConfigurationManager.ConnectionStrings[connectionStringName];
         if (connectionStringSetting == null)
         {
           throw new ConfigurationErrorsException(
