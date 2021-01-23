@@ -10,7 +10,7 @@ namespace lennybacon.MyFood.Controllers
   public class FoodController : ApiController
   {
     private DataAccess _dataAccess = new DataAccess();
-    private FoodMapper _mapper = new FoodMapper();
+    private GenericMapper<Food> _mapper = new GenericMapper<Food>();
 
     // GET api/values
     public IEnumerable<Food> Get()

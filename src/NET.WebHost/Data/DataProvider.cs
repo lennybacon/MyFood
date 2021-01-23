@@ -24,71 +24,48 @@ namespace lennybacon.MyFood.Data
     /// </summary>
     public string ConnectionString { get; }
 
-    public object GetValue(
-      string commandText,
-      OrderedDictionary parameters = null)
+    public object GetValue(string commandText, OrderedDictionary parameters = null)
     {
-      return ProcessCommand(
-        cmd => cmd.ExecuteScalar(),
-       commandText,
-       parameters);
+      return ProcessCommand(cmd => cmd.ExecuteScalar(), commandText, parameters);
     }
 
 
-    public T GetValue<T>(
-      string commandText,
-      OrderedDictionary parameters = null)
+    public T GetValue<T>(string commandText, OrderedDictionary parameters = null)
     {
-      return (T)ProcessCommand(
-        cmd => cmd.ExecuteScalar(),
-       commandText,
-       parameters);
+      return (T)ProcessCommand(cmd => cmd.ExecuteScalar(),commandText, parameters);
     }
 
     /// <summary>
     /// Executes a non-query command but does not care about connection and command handling.
     /// </summary>
-    public int ExecuteCommand(
-      string commandText,
-      OrderedDictionary parameters = null)
+    public int ExecuteCommand(string commandText, OrderedDictionary parameters = null)
     {
-      return ProcessCommand(
-       cmd => cmd.ExecuteNonQuery(),
-       commandText,
-       parameters);
+      return ProcessCommand(cmd => cmd.ExecuteNonQuery(), commandText, parameters);
     }
 
-    public void ProcessResult(
-      Action<Func<string, object>> processRowAction,
-      string commandText,
-      OrderedDictionary parameters = null)
+    public void ProcessResult(Action<Func<string, object>> processRowAction, string commandText, OrderedDictionary parameters = null)
     {
-      ProcessCommand(
-       cmd =>
-       {
-         using (var reader = cmd.ExecuteReader())
-         {
-           while (reader.Read())
-           {
-             processRowAction(
-                 new Func<string, object>(name => reader[name])
-               );
-           }
-         }
-         return true;
-       },
-       commandText,
-       parameters);
+      ProcessCommand(cmd =>
+                     {
+                       using (var reader = cmd.ExecuteReader())
+                       {
+                         while (reader.Read())
+                         {
+                           processRowAction(
+                               new Func<string, object>(name => reader[name])
+                             );
+                         }
+                       }
+                       return true;
+                     },
+                     commandText, parameters);
     }
 
 
     /// <summary>
     /// Handles the command and connection while not knowing what is done with the command.
     /// </summary>
-    private T ProcessCommand<T>(
-      Func<SqlCommand, T> action,
-      string commandText,
-      OrderedDictionary parameters = null)
+    private T ProcessCommand<T>(Func<SqlCommand, T> action, string commandText, OrderedDictionary parameters = null)
     {
       using (var connection = new SqlConnection(ConnectionString))
       {
